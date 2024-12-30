@@ -1,0 +1,13 @@
+
+
+.background-image-guide {
+    z-index: -1;
+    background-image: url("../../Images/nodes.jpg");
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 91vh;
+    max-height: 1080px;
+    max-width: 1920px;
+    overflow: hidden;
+    mask-image: radial-gradient(closest-side, rgba(255, 255, 255, 1) 60%, rgba(255, 255, 255, 0) 100%);
+}

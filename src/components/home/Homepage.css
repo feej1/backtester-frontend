@@ -1,0 +1,22 @@
+
+
+
+.background-image { 
+    background-image: url("../../Images/nodes.jpg");
+    z-index: -1;
+    background-size: cover;
+    background-position: 50% 50%;
+    height: 93vh;
+    max-height: 1080px;
+    max-width: 1920px;
+    overflow: hidden;
+    mask-image: radial-gradient(closest-side,rgb(255, 255, 255, 0) 0%, rgb(255, 255, 255, .9) 75%, rgba(255,255,255,0) 100%);
+  }
+
+.content-over-background {
+  height: 91vh;
+  max-height: 1080px;
+  max-width: 1920px;
+  overflow: scroll;
+}
+
