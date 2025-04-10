@@ -1,12 +1,26 @@
 import { Component } from "react";
 
-const INPUT_TYPES = {TICKER: 0, STRING: 1, PERCENT: 2, INTEGER: 3, FLOAT: 4, DATE: 5, RADIO: 6}
-const DATE_TYPES = {END_DATE: 0, START_DATE: 1, OTHER_DATE: 2}
+const INPUT_TYPES = { TICKER: 0, STRING: 1, PERCENT: 2, INTEGER: 3, FLOAT: 4, DATE: 5, RADIO: 6 }
+const DATE_TYPES = { END_DATE: 0, START_DATE: 1, OTHER_DATE: 2 }
 
-const SETTING_IDS = {BASE_NAME_SETTING: 0, BASE_START_DATE_SETTING: 1, 
-                    BASE_END_DATE_SETTING: 2, BASE_STOP_LOSS_SETTING: 3, MACD_HOLD_ASSET_WHEN_NOT_TRADING: 4, 
-                MACD_TRACK_SEPARATE_ASSET: 5, MACD_SEAPRATE_SIGNAL_TICKER: 6, MACD_STATIC_HOLDING_TICKER: 7,
-            MACD_TRADING_TICKER: 8, MACD_SHORT_TERM_EMA_PERIOD: 9, MACD_LONG_TERM_EMA_PERIOD: 10, MACD_SIGNAL_PERIOD: 11}
+const SETTING_IDS = {
+    // base setting ids
+    BASE_NAME_SETTING: 0, BASE_START_DATE_SETTING: 1,
+    BASE_END_DATE_SETTING: 2, BASE_STOP_LOSS_SETTING: 3,
+    // macd setting ids
+    MACD_HOLD_ASSET_WHEN_NOT_TRADING: 4, MACD_TRACK_SEPARATE_ASSET: 5,
+    MACD_SEAPRATE_SIGNAL_TICKER: 6, MACD_STATIC_HOLDING_TICKER: 7,
+    MACD_TRADING_TICKER: 8, MACD_SHORT_TERM_EMA_PERIOD: 9,
+    MACD_LONG_TERM_EMA_PERIOD: 10, MACD_SIGNAL_PERIOD: 11,
+    // buy and hold setting ids
+    BH_TRADING_TICKER: 12,
+    // MVA cross Settings
+    MVA_HOLD_ASSET_WHEN_NOT_TRADING: 13, MVA_TRACK_SEPARATE_ASSET: 14,
+    MVA_SEAPRATE_SIGNAL_TICKER: 15, MVA_STATIC_HOLDING_TICKER: 16,
+    MVA_TRADING_TICKER: 17,MVA_SHORT_TERM_MVA_PERIOD: 18,
+    MVA_LONG_TERM_MVA_PERIOD: 19
+
+}
 
 const BaseNameSetting = {
     SettingId: SETTING_IDS.BASE_NAME_SETTING,
@@ -16,9 +30,9 @@ const BaseNameSetting = {
     ToolTip: "Tooltip for this settings",
     InputType: INPUT_TYPES.STRING,
     IsValid: true,
-    ValidationSettings : {
+    ValidationSettings: {
         MaxSize: 40,
-        MinSize:0,
+        MinSize: 3,
         AllowWhiteSpace: true,
         OnlyLetters: false,
         IsRequired: true
@@ -63,7 +77,7 @@ const BaseStopLossSetting = {
     ToolTip: "Tooltip for this settings",
     InputType: INPUT_TYPES.PERCENT,
     IsValid: true,
-    ValidationSettings : {
+    ValidationSettings: {
         MaxValue: 50,
         MinValue: 0,
         IsRequired: false
@@ -75,7 +89,9 @@ class BaseSettings extends Component {
 
     constructor(props) {
         super(props)
+        this.BacktestId = crypto.randomUUID().toString()
         this.values = {};
+        this.Strategy = null;
         this.SettingParameters = [
             BaseNameSetting,
             BaseStartDateSetting,
@@ -83,16 +99,17 @@ class BaseSettings extends Component {
             BaseStopLossSetting
         ]
         this.SETTINGS_IDS = {
-            BASE_NAME_SETTING: 0, BASE_START_DATE_SETTING: 1,
-            BASE_END_DATE_SETTING: 2, BASE_STOP_LOSS_SETTING: 3
+            BASE_NAME_SETTING: SETTING_IDS.BASE_NAME_SETTING, 
+            BASE_START_DATE_SETTING: SETTING_IDS.BASE_START_DATE_SETTING,
+            BASE_END_DATE_SETTING: SETTING_IDS.BASE_END_DATE_SETTING, 
+            BASE_STOP_LOSS_SETTING: SETTING_IDS.BASE_STOP_LOSS_SETTING
         }
         this.IsSaved = false
     }
 
-    GetSettingValue(settingId){
-        const settingParameter = this.SettingParameters.find(settingParam => settingParam.SettingId === settingId)
-        
-        if (this.values.hasOwnProperty(settingId)){
+    GetSettingValue(settingId) {
+
+        if (this.values.hasOwnProperty(settingId)) {
             return this.values[settingId];
         }
 
@@ -100,26 +117,35 @@ class BaseSettings extends Component {
 
     }
 
+    RenderSettingResults() {
+
+        return (
+            <div>
+                Not yet implemented
+            </div>
+        )
+    }
+
     SaveBacktest() {
 
-        if (!this.AreSettingsValid()){
+        if (!this.AreSettingsValid()) {
             return false;
         }
 
         // clear values with d-none
         const hiddenSettings = document.getElementsByClassName("d-none")
-        for (const element of hiddenSettings){
+        for (const element of hiddenSettings) {
             delete this.values[Number(element.id)]
         }
 
         // clear values with that are not required and are null or empty
-        for (const setting of this.SettingParameters){
+        for (const setting of this.SettingParameters) {
             const id = setting.SettingId
-            if (this.values.hasOwnProperty(id) && (this.values[id] === null || this.values[id] === "")){
+            if (this.values.hasOwnProperty(id) && (this.values[id] === null || this.values[id] === "")) {
                 delete this.values[id]
             }
         }
-        this.IsSaved = true 
+        this.IsSaved = true
     }
 
     GetSettingAttributes(setting) {
@@ -150,19 +176,19 @@ class BaseSettings extends Component {
         let isValid = true;
         // check setting for settings that are invalid and present == not valid
         const invalidDocuments = document.getElementsByClassName("is-invalid")
-        for (const element of invalidDocuments){
-            if (!element.classList.contains("d-none")){
+        for (const element of invalidDocuments) {
+            if (!element.classList.contains("d-none")) {
                 isValid = false
                 break;
             }
         }
 
         // check for settings that are required, dont have a value and are being displayed
-        for (const setting of this.SettingParameters){
+        for (const setting of this.SettingParameters) {
             const isValuePresent = this.values.hasOwnProperty(setting.SettingId)
             const htmlEle = document.getElementById(setting.SettingId.toString())
-            if (!isValuePresent && setting.InputType !== INPUT_TYPES.RADIO && 
-                !htmlEle.classList.contains("d-none") && setting.ValidationSettings.IsRequired){
+            if (!isValuePresent && setting.InputType !== INPUT_TYPES.RADIO &&
+                !htmlEle.classList.contains("d-none") && setting.ValidationSettings.IsRequired) {
                 isValid = false
                 break;
             }
@@ -173,8 +199,8 @@ class BaseSettings extends Component {
 
     ShowInvalidSettings() {
 
-        for (const setting of this.SettingParameters){
-            
+        for (const setting of this.SettingParameters) {
+
             const ele = document.getElementById(setting.SettingId.toString() + "-input")
             if (ele === null) {
                 continue;
@@ -183,7 +209,7 @@ class BaseSettings extends Component {
             ele.classList.remove("is-invalid");
 
             const isValuePresent = this.values.hasOwnProperty(setting.SettingId)
-            if (!isValuePresent && setting.ValidationSettings.IsRequired){
+            if (!isValuePresent && setting.ValidationSettings.IsRequired) {
                 ele.classList.add("is-invalid");
                 ele.classList.add("apply-shake");
             }
@@ -311,8 +337,9 @@ class BaseSettings extends Component {
         return (value) => {
             {
                 const num = Number(value)
-                let isValid = (validationSettings.IsRequired ? (value !== null && value !== "") : true
-                    && (num !== NaN && num >= validationSettings.MinValue && num <= validationSettings.MaxValue));
+                let isValid = (validationSettings.IsRequired ? (value !== null && value !== "") : true)
+                    && NaN !== num
+                    && (num >= validationSettings.MinValue && num <= validationSettings.MaxValue);
 
                 let containsNoWhitespace = value != null && value.length > 0 ? /^[^\s]+$/.test(value) : true;
                 isValid = isValid && containsNoWhitespace;
@@ -340,8 +367,8 @@ class BaseSettings extends Component {
 
         }
     }
-    
+
 
 }
 
-export {BaseSettings, BaseEndDateSetting, BaseNameSetting, BaseStartDateSetting, BaseStopLossSetting, INPUT_TYPES, DATE_TYPES, SETTING_IDS};
+export { BaseSettings, BaseEndDateSetting, BaseNameSetting, BaseStartDateSetting, BaseStopLossSetting, INPUT_TYPES, DATE_TYPES, SETTING_IDS };

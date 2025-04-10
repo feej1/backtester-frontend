@@ -15,7 +15,7 @@ function Navbar() {
                     <div className="navbar-nav col-4">
                             <Link to="/" className="nav-item p-2 nav-link hover-link-blue">Home</Link>
                             <Link to="/Tool" className="nav-item p-2 nav-link hover-link-blue">Tool</Link>
-                            <Link to="/Guide" className="nav-item p-2 nav-link hover-link-blue">Guide</Link>
+                            {/* <Link to="/Guide" className="nav-item p-2 nav-link hover-link-blue">Guide</Link> */}
                             <Link to="/Contact" className="nav-item p-2 nav-link hover-link-blue">Contact</Link>
                     </div>
                     <div className="col col-8"></div>

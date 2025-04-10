@@ -3,8 +3,9 @@ import { Component } from "react";
 import {
     BaseSettings, BaseEndDateSetting, BaseNameSetting,
     BaseStartDateSetting, BaseStopLossSetting,
-    INPUT_TYPES, DATE_TYPES
+    INPUT_TYPES, DATE_TYPES, SETTING_IDS
 } from "./BaseSettings";
+import { RunMacdBacktest, STRATEGIES } from "../backtestApiClient/BacktestApiClient";
 
 
 
@@ -758,16 +759,17 @@ class MacdCrossOverSettings extends BaseSettings {
 
     constructor(props) {
         super(props);
+        this.Strategy = STRATEGIES.MACD_CROSS;
         this.SETTINGS_IDS = {
             ...this.SETTINGS_IDS,
-            MACD_HOLD_ASSET_WHEN_NOT_TRADING: 4,
-            MACD_TRACK_SEPARATE_ASSET: 5,
-            MACD_SEAPRATE_SIGNAL_TICKER: 6,
-            MACD_STATIC_HOLDING_TICKER: 7,
-            MACD_TRADING_TICKER: 8,
-            MACD_SHORT_TERM_EMA_PERIOD: 9,
-            MACD_LONG_TERM_EMA_PERIOD: 10,
-            MACD_SIGNAL_PERIOD: 11
+            MACD_HOLD_ASSET_WHEN_NOT_TRADING: SETTING_IDS.MACD_HOLD_ASSET_WHEN_NOT_TRADING,
+            MACD_TRACK_SEPARATE_ASSET: SETTING_IDS.MACD_TRACK_SEPARATE_ASSET,
+            MACD_SEAPRATE_SIGNAL_TICKER: SETTING_IDS.MACD_SEAPRATE_SIGNAL_TICKER,
+            MACD_STATIC_HOLDING_TICKER: SETTING_IDS.MACD_STATIC_HOLDING_TICKER,
+            MACD_TRADING_TICKER: SETTING_IDS.MACD_TRADING_TICKER,
+            MACD_SHORT_TERM_EMA_PERIOD: SETTING_IDS.MACD_SHORT_TERM_EMA_PERIOD,
+            MACD_LONG_TERM_EMA_PERIOD: SETTING_IDS.MACD_LONG_TERM_EMA_PERIOD,
+            MACD_SIGNAL_PERIOD: SETTING_IDS.MACD_SIGNAL_PERIOD
         }
         this.SettingParameters = [
             ...this.SettingParameters,
@@ -885,8 +887,45 @@ class MacdCrossOverSettings extends BaseSettings {
         ]
     }
 
+    GetDescriptionText(){
+        return `The MACD (Moving Average Convergence Divergence) crossover trading strategy
+         is a popular technical analysis tool used to identify potential buy and sell 
+         signals. 
+         The strategy uses the MACD indicator, which is based on the difference between 
+         two moving averages: a short term Exponential Moving Average (EMA) and longer term EMA.
+         The MACD Line is the difference between the short and long term EMA's. The Signal line an
+         exponential moving average of the MACD Line. A buy signal occurs when the MACD line crosses above the signal line.
+         and a sell signal occurs when the MACD line crosses below the signal line.`
+    }
+
+    GetParameterDescriptions(){
+        return null
+    }
+
+    GetTitle(){
+        return "MACD Crossover"
+    }
+
     GetValues() {
         return null
+    }
+
+    RenderSettingResults() {
+
+        return (
+            <div>
+                    <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Date range: {this.values[this.SETTINGS_IDS.BASE_START_DATE_SETTING]} - {this.values[this.SETTINGS_IDS.BASE_END_DATE_SETTING]}</span></div>
+                    <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Ticker: {this.values[this.SETTINGS_IDS.MACD_TRADING_TICKER]}</span></div>
+                    <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Short term EMA: {this.values[this.SETTINGS_IDS.MACD_SHORT_TERM_EMA_PERIOD]}</span></div>
+                    <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Long term EMA: {this.values[this.SETTINGS_IDS.MACD_LONG_TERM_EMA_PERIOD]}</span></div>
+                    <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">MACD signal period: {this.values[this.SETTINGS_IDS.MACD_SIGNAL_PERIOD]}</span></div>
+                    {this.values.hasOwnProperty(this.SETTINGS_IDS.MACD_STATIC_HOLDING_TICKER) &&
+                        <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Holding asset in downtime: {this.values[this.SETTINGS_IDS.MACD_STATIC_HOLDING_TICKER]}</span></div>}
+                    {this.values.hasOwnProperty(this.SETTINGS_IDS.MACD_SEAPRATE_SIGNAL_TICKER) &&
+                        <div className="" key={this.GetUniqueKeyId()}> <span className="font-monospace">Tracking separate asset: {this.values[this.SETTINGS_IDS.MACD_SEAPRATE_SIGNAL_TICKER]}</span></div>}
+        
+            </div>
+        )
     }
 
     #RenderSettingParams(setting) {
@@ -916,6 +955,7 @@ class MacdCrossOverSettings extends BaseSettings {
                             placeholder={setting.DefaultValue !== null ? setting.DefaultValue.toString() : null}
                             onBlur={(e) => ValidationFunction(e.target.value)}
                             defaultValue={setting.Value}
+                            // data-bs-toggle="tooltip" data-bs-title="Default tooltip"  DISABLING FOR NOW
                         />
                         {/* {!settings.NameIsValid && <InvalidFeedback Message="Error" />} */}
                     </div>
@@ -924,7 +964,7 @@ class MacdCrossOverSettings extends BaseSettings {
         }
     }
 
-    #RenderAddedBacktestListItem() {
+    RenderAddedBacktestListItem(HandleRemoveBacktest) {
         const id = this.GetUniqueKeyId();
 
         return (
@@ -937,6 +977,7 @@ class MacdCrossOverSettings extends BaseSettings {
                     <a className="btn btn-primary" data-bs-toggle="collapse" href={"#" + id} role="button" aria-expanded="false" aria-controls={id}>
                         &#9660;
                     </a>
+                    <button type="button" className="btn-close px-3" aria-label="Close" onClick={() => HandleRemoveBacktest(this.BacktestId)}></button>
                 </div>
 
                 <div className="collapse my-1" id={id}>
@@ -958,11 +999,12 @@ class MacdCrossOverSettings extends BaseSettings {
         );
     }
 
+    // need to update to account for making backtest list item public
     render() {
         if (this.IsSaved) {
             return (
                 <>
-                    {this.#RenderAddedBacktestListItem()}
+                    {this.RenderAddedBacktestListItem()}
                 </>
             )
         }

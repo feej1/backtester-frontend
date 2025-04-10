@@ -174,6 +174,7 @@ function StockChart({ data, isLoading, seriesName }) {
                 options={options}
                 ref={chartRef}
                 constructorType={"stockChart"}
+                containerProps={{ style: { height: '90vmin' } }}
             />
         </div>
     );

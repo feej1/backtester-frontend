@@ -4,7 +4,6 @@ import backTestData from '../src/components/chart/backTestSample'
 import StockChart from '../src/components/chart/chart'
 import Homepage from './components/home/Homepage'
 import Navbar from './components/Navbar/Navbar';
-import Tool from './components/Tool/Tool';
 import Footer from './components/Footer/Footer';
 import Contact from './components/Contact/Contact';
 import ToolGuide from './components/Guide/Guide';
@@ -20,7 +19,7 @@ function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/Tool" element={<Tool2 />} />
         <Route path="/Contact" element={(<Contact/>)} />
-        <Route path="/Guide" element={(<ToolGuide/>)} />
+        {/* <Route path="/Guide" element={(<ToolGuide/>)} /> */}
       </Routes>
     </div>
   );
