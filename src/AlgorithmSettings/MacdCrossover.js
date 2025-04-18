@@ -762,10 +762,8 @@ class MacdCrossOverSettings extends BaseSettings {
         this.Strategy = STRATEGIES.MACD_CROSS;
         this.SETTINGS_IDS = {
             ...this.SETTINGS_IDS,
-            MACD_HOLD_ASSET_WHEN_NOT_TRADING: SETTING_IDS.MACD_HOLD_ASSET_WHEN_NOT_TRADING,
             MACD_TRACK_SEPARATE_ASSET: SETTING_IDS.MACD_TRACK_SEPARATE_ASSET,
             MACD_SEAPRATE_SIGNAL_TICKER: SETTING_IDS.MACD_SEAPRATE_SIGNAL_TICKER,
-            MACD_STATIC_HOLDING_TICKER: SETTING_IDS.MACD_STATIC_HOLDING_TICKER,
             MACD_TRADING_TICKER: SETTING_IDS.MACD_TRADING_TICKER,
             MACD_SHORT_TERM_EMA_PERIOD: SETTING_IDS.MACD_SHORT_TERM_EMA_PERIOD,
             MACD_LONG_TERM_EMA_PERIOD: SETTING_IDS.MACD_LONG_TERM_EMA_PERIOD,
@@ -787,19 +785,6 @@ class MacdCrossOverSettings extends BaseSettings {
                 }
             },
             {
-                SettingId: this.SETTINGS_IDS.MACD_HOLD_ASSET_WHEN_NOT_TRADING,
-                SettingName: "Hold an asset while not trading",
-                DefaultValue: false,
-                Value: null,
-                ToolTip: "Tooltip for this settings",
-                InputType: INPUT_TYPES.RADIO,
-                ValidationSettings: null,
-                RadioSettings: {
-                    ToggleTrue: [this.SETTINGS_IDS.MACD_STATIC_HOLDING_TICKER],
-                    ToggleFalse: []
-                }
-            },
-            {
                 SettingId: this.SETTINGS_IDS.MACD_SEAPRATE_SIGNAL_TICKER,
                 SettingName: "Signal Ticker",
                 DefaultValue: "SPY",
@@ -810,18 +795,6 @@ class MacdCrossOverSettings extends BaseSettings {
                 ValidationSettings: {
                     IsRequired: true
                 }
-            },
-            {
-                SettingId: this.SETTINGS_IDS.MACD_STATIC_HOLDING_TICKER,
-                SettingName: "Static Holding Ticker",
-                DefaultValue: "SPXS",
-                Value: null,
-                ToolTip: "Tooltip for this settings",
-                InputType: INPUT_TYPES.TICKER,
-                IsValid: true,
-                ValidationSettings: {
-                    IsRequired: true
-                },
             },
             {
                 SettingId: this.SETTINGS_IDS.MACD_TRADING_TICKER,

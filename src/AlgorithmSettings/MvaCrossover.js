@@ -17,10 +17,8 @@ class MvaCrossOverSettings extends BaseSettings {
         this.Strategy = STRATEGIES.MVA_CROSS;
         this.SETTINGS_IDS = {
             ...this.SETTINGS_IDS,
-            MVA_HOLD_ASSET_WHEN_NOT_TRADING: SETTING_IDS.MVA_HOLD_ASSET_WHEN_NOT_TRADING,
             MVA_TRACK_SEPARATE_ASSET: SETTING_IDS.MVA_TRACK_SEPARATE_ASSET,
             MVA_SEAPRATE_SIGNAL_TICKER: SETTING_IDS.MVA_SEAPRATE_SIGNAL_TICKER,
-            MVA_STATIC_HOLDING_TICKER: SETTING_IDS.MVA_STATIC_HOLDING_TICKER,
             MVA_TRADING_TICKER: SETTING_IDS.MVA_TRADING_TICKER,
             MVA_SHORT_TERM_MVA_PERIOD: SETTING_IDS.MVA_SHORT_TERM_MVA_PERIOD,
             MVA_LONG_TERM_MVA_PERIOD: SETTING_IDS.MVA_LONG_TERM_MVA_PERIOD
@@ -41,19 +39,6 @@ class MvaCrossOverSettings extends BaseSettings {
                 }
             },
             {
-                SettingId: this.SETTINGS_IDS.MVA_HOLD_ASSET_WHEN_NOT_TRADING,
-                SettingName: "Hold an asset while not trading",
-                DefaultValue: false,
-                Value: null,
-                ToolTip: "Tooltip for this settings",
-                InputType: INPUT_TYPES.RADIO,
-                ValidationSettings: null,
-                RadioSettings: {
-                    ToggleTrue: [this.SETTINGS_IDS.MVA_STATIC_HOLDING_TICKER],
-                    ToggleFalse: []
-                }
-            },
-            {
                 SettingId: this.SETTINGS_IDS.MVA_SEAPRATE_SIGNAL_TICKER,
                 SettingName: "Signal Ticker",
                 DefaultValue: "SPY",
@@ -64,18 +49,6 @@ class MvaCrossOverSettings extends BaseSettings {
                 ValidationSettings: {
                     IsRequired: true
                 }
-            },
-            {
-                SettingId: this.SETTINGS_IDS.MVA_STATIC_HOLDING_TICKER,
-                SettingName: "Static Holding Ticker",
-                DefaultValue: "SPXS",
-                Value: null,
-                ToolTip: "Tooltip for this settings",
-                InputType: INPUT_TYPES.TICKER,
-                IsValid: true,
-                ValidationSettings: {
-                    IsRequired: true
-                },
             },
             {
                 SettingId: this.SETTINGS_IDS.MVA_TRADING_TICKER,
@@ -255,83 +228,6 @@ class MvaCrossOverSettings extends BaseSettings {
 
 
 }
-
-
-
-
-
-//  const MvaCrossoverSettingsParams = [
-//     {
-//         SettingName: "Use a Separate Asset for Trading Signals",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.RADIO,
-//         ValidationSettings: null,
-//         RadioSettings: {
-//             Enabled: [2],
-//             Disabled: []
-//         }
-//     },
-//     {
-//         SettingName: "Hold an asset while not trading",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.RADIO,
-//         ValidationSettings: null,
-//         RadioSettings: {
-//             Enabled: [2],
-//             Disabled: []
-//         }
-//     },
-//     {
-//         SettingName: "Signal Ticker",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.TICKER,
-//         ValidationSettings: null,
-//     },
-//     {
-//         SettingName: "Static Holding Ticker",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.TICKER,
-//         ValidationSettings: null,
-//     },
-//     {
-//         SettingName: "Trading Ticker",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.TICKER,
-//         ValidationSettings: null,
-//     },
-//     {
-//         SettingName: "Short Term MVA Period",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.INTEGER,
-//         ValidationSettings: null,
-//     },
-//     {
-//         SettingName: "Long Term MVA Period",
-//         DefaultValue: false,
-//         Value: null,
-//         ToolTip: "Tooltip for this settings",
-//         InputType: INPUT_TYPES.INTEGER,
-//         ValidationSettings: null,
-//     },
-//     BaseStartDateSetting,
-//     BaseEndDateSetting,
-//     BaseStopLossSetting
-
-//  ]
-
-
 
 
 export default MvaCrossOverSettings
