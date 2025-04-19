@@ -40,8 +40,6 @@ async function RunMacdBacktest(settings) {
         EndDate: settings.GetSettingValue(SETTING_IDS.BASE_END_DATE_SETTING),
         AssetToTrackTicker: settings.GetSettingValue(SETTING_IDS.MACD_SEAPRATE_SIGNAL_TICKER) ?? settings.GetSettingValue(SETTING_IDS.MACD_TRADING_TICKER),
         AssetToTradeTicker: settings.GetSettingValue(SETTING_IDS.MACD_TRADING_TICKER),
-        StaticHoldingTicker: settings.GetSettingValue(SETTING_IDS.MACD_STATIC_HOLDING_TICKER),
-        StopLossPercentage: Number(settings.GetSettingValue(SETTING_IDS.BASE_STOP_LOSS_SETTING)),
         ShortTermEma: Number(settings.GetSettingValue(SETTING_IDS.MACD_SHORT_TERM_EMA_PERIOD)),
         LongTermEma: Number(settings.GetSettingValue(SETTING_IDS.MACD_LONG_TERM_EMA_PERIOD)),
         MacdSignalLine: Number(settings.GetSettingValue(SETTING_IDS.MACD_SIGNAL_PERIOD)),
@@ -110,8 +108,6 @@ async function RunMvaCrossBacktest(settings) {
         EndDate: settings.GetSettingValue(SETTING_IDS.BASE_END_DATE_SETTING),
         AssetToTrackTicker: settings.GetSettingValue(SETTING_IDS.MVA_SEAPRATE_SIGNAL_TICKER) ?? settings.GetSettingValue(SETTING_IDS.MVA_TRADING_TICKER),
         AssetToTradeTicker: settings.GetSettingValue(SETTING_IDS.MVA_TRADING_TICKER),
-        StaticHoldingTicker: settings.GetSettingValue(SETTING_IDS.MVA_STATIC_HOLDING_TICKER),
-        StopLossPercentage: Number(settings.GetSettingValue(SETTING_IDS.BASE_STOP_LOSS_SETTING)),
         ShortTermMva: Number(settings.GetSettingValue(SETTING_IDS.MVA_SHORT_TERM_MVA_PERIOD)),
         LongTermMva: Number(settings.GetSettingValue(SETTING_IDS.MVA_LONG_TERM_MVA_PERIOD)),
         Strategy: STRATEGIES.MVA_CROSS
@@ -146,8 +142,6 @@ async function RunSampleBacktest(settings) {
         EndDate: "2022-01-01",
         AssetToTrackTicker: "SPXL",
         AssetToTradeTicker: "SPXL",
-        StaticHoldingTicker: null,
-        StopLossPercentage: null,
         ShortTermMva: 9,
         LongTermMva: 15,
         Strategy: 0
