@@ -69,6 +69,7 @@ const BaseEndDateSetting = {
     }  // custom handler for dates so there are no other settings
 };
 
+// deprecated
 const BaseStopLossSetting = {
     SettingId: SETTING_IDS.BASE_STOP_LOSS_SETTING,
     SettingName: "Stop Loss Percentage",
@@ -96,13 +97,11 @@ class BaseSettings extends Component {
             BaseNameSetting,
             BaseStartDateSetting,
             BaseEndDateSetting,
-            BaseStopLossSetting
         ]
         this.SETTINGS_IDS = {
             BASE_NAME_SETTING: SETTING_IDS.BASE_NAME_SETTING, 
             BASE_START_DATE_SETTING: SETTING_IDS.BASE_START_DATE_SETTING,
-            BASE_END_DATE_SETTING: SETTING_IDS.BASE_END_DATE_SETTING, 
-            BASE_STOP_LOSS_SETTING: SETTING_IDS.BASE_STOP_LOSS_SETTING
+            BASE_END_DATE_SETTING: SETTING_IDS.BASE_END_DATE_SETTING
         }
         this.IsSaved = false
     }
@@ -200,7 +199,7 @@ class BaseSettings extends Component {
     ShowInvalidSettings() {
 
         for (const setting of this.SettingParameters) {
-
+            console.log("gererer")
             const ele = document.getElementById(setting.SettingId.toString() + "-input")
             if (ele === null) {
                 continue;
